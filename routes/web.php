@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,13 +19,13 @@ use Illuminate\Http\Request;
 
 
 Route::get('/', function () {
-    return view('index');
+ return view('index');
+
 });
 
 Route::get('/join',function (){
-   return view('join');
+   return view('join',["join_complete"=>false]);
 });
-
 Route::post('/join',function (Request $request){
     $name=$request->name;
     $email=$request->email;
@@ -71,6 +73,16 @@ Route::post('/join',function (Request $request){
     }
     else
     {
+
+
+        $user=new User();
+        $user->name=$name;
+        $user->phone=$phone;
+        $user->city=$city;
+        $user->email=$email;
+        $user->password=\Illuminate\Support\Facades\Hash::make($password);
+        $user->save();
+
         $error=false;
         $message="everthing seems fine.";
         $join_complete=true;
@@ -79,8 +91,61 @@ Route::post('/join',function (Request $request){
     return view('join', [
         "msg"=>$message,
         "iserror"=>$error,
-            "join_complete"=>$join_complete
+        "join_complete"=>$join_complete
         ]
     );
 
+});
+
+Route::get('login',function(Request $request){
+    $user_id=$request->session()->get('user_id');
+    if($user_id){
+        return redirect('/dashboard');
+    }
+    else{
+        return view('login',['iserror'=>false,'msg'=>'']);
+    }
+
+});
+Route::post('login',function(Request $request){
+    $email=$request->email;
+    $password=$request->password;
+
+    $msg="";
+    $success=false;
+
+    if(!$email){
+        $msg="Please enter email";
+    }
+    else if(!$password){
+        $msg="Password is required.";
+    }
+    else{
+        $user=User::where('email',$email)->first();
+        if($user){
+            $pwd=$user->password;
+             if(\Illuminate\Support\Facades\Hash::check($password,$pwd)){
+                 $request->session()->put('user_id',$user->id );
+                 $success=true;
+             }
+             else{
+                 $msg="Invalid Password";
+             }
+        }else{
+            $msg="This email is not registered in our system.";
+        }
+    }
+    if($success)
+    {
+        return redirect('/dashbaord');
+    }
+    else{
+        return view('login',['iserror'=>true,'msg'=>$msg]);
+
+    }
+});
+
+Route::get('/logout',function(Request $request){
+   $request->session()->invalidate();
+   return redirect('/');
 });

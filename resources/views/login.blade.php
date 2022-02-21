@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>FlexStart Bootstrap Template - Index</title>
+  <title>Login</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
   <!-- Favicons -->
@@ -42,8 +42,8 @@
     <section id="contact" class="contact">
       <div class="container" data-aos="fade-up">
         <header class="section-header">
-          <h2>Be part of Union</h2>
-          <p>Join Us Now</p>
+          <h2>Welcome Back</h2>
+          <p>Login </p>
         </header>
         <div class="row gy-4">
           <div class="col-lg-2">
@@ -51,7 +51,7 @@
           </div>
           <div class="col-lg-8">
 
-            <form action="/join" method="post" class="php-email-form">
+            <form action="/login" method="post" class="php-email-form">
                 {{ csrf_field() }}
 
                 @if(isset($iserror) && $iserror==true)
@@ -61,48 +61,26 @@
                         </div>
                     </div>
                 @endif
-
-                @if(isset($join_complete) && $join_complete==false)
               <div class="row gy-4">
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
-                </div>
 
-                <div class="col-md-6 ">
+
+                <div class="col-md-12">
                   <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                 </div>
 
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="phone" placeholder="Whatsapp Phone" required>
-                </div>
-
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="city" placeholder="City" required>
-                </div>
 
                   <div class="col-md-12">
                   <input type="password" class="form-control" name="password" placeholder="*****" required>
                 </div>
-                  <div class="col-md-12">
-                      <input type="password" class="form-control" name="confirm_password" placeholder="*****" required>
-                  </div>
+
 
                 <div class="col-md-12 text-center">
                   <div class="loading">Loading</div>
                   <div class="error-message"></div>
                   <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                  <button type="submit">Join Now</button>
+                  <button type="submit">Login</button>
                 </div>
-
               </div>
-                @else
-                    <div class="row gy-4">
-                        <div class="alert alert-success" role="alert">
-                            <h3>Your account has been created. Please verify your email </h3>
-                        </div>
-                    </div>
-                @endif
             </form>
           </div>
         </div>
